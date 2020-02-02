@@ -1,15 +1,15 @@
 /****************************************************************
-Example code demonstrating the use of the Arduino Library for
-the SparkFun MiniMoto board, which uses the TI DRV8830 IC for I2C
-low-voltage DC motor control.
+    Example code demonstrating the use of the Arduino Library for
+    the SparkFun MiniMoto board, which uses the TI DRV8830 IC for I2C
+    low-voltage DC motor control.
 
-This code is beerware; if you use it, please buy me (or any other
-SparkFun employee) a cold beverage next time you run into one of
-us at the local.
+    This code is beerware; if you use it, please buy me (or any other
+    SparkFun employee) a cold beverage next time you run into one of
+    us at the local.
 
-17 Sep 2013- Mike Hord, SparkFun Electronics
+    17 Sep 2013- Mike Hord, SparkFun Electronics
 
-Code developed in Arduino 1.0.5, on a Fio classic board.
+    Code developed in Arduino 1.0.5, on a Fio classic board.
 
 **Updated for Arduino 1.6.4 5/2015**
 ****************************************************************/
@@ -35,8 +35,7 @@ Code developed in Arduino 1.0.5, on a Fio classic board.
 #define UVLO 0x04
 #define OCP 0x02
 
-class MiniMoto
-{
+class MiniMoto {
   public:
     MiniMoto(byte addr);
     void drive(int speed);
@@ -44,8 +43,8 @@ class MiniMoto
     void brake();
     byte getFault();
   private:
-    void I2CWriteBytes(byte addr, byte *buffer, byte len);
-    void I2CReadBytes(byte addr, byte *buffer, byte len);
+    void I2CWriteBytes(byte addr, byte* buffer, byte len);
+    void I2CReadBytes(byte addr, byte* buffer, byte len);
     byte _addr;
 };
 
