@@ -1,4 +1,4 @@
-SparkFun MiniMoto Arduino Library
+SparkFun MiniMoto Arduino Library  [![Build Status](https://travis-ci.com/Seeed-Studio/Drv8830_Motor_Driver.svg?branch=master)](https://travis-ci.com/Seeed-Studio/Drv8830_Motor_Driver)
 ========================================
 
 <img src=https://statics3.seeedstudio.com/images/product/105020010%202.jpg width=400><img src=https://statics3.seeedstudio.com/product/105020010%202_02.jpg width=400>
