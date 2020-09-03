@@ -20,7 +20,7 @@
 MiniMoto motor0(0xC4); // A1 = 1, A0 = clear
 MiniMoto motor1(0xC0); // A1 = 1, A0 = 1 (default)
 
-#define FAULTn  16     // Pin used for fault detection.
+#define FAULTn  1     // Pin used for fault detection.
 
 // Nothing terribly special in the setup() function- prep the
 //  serial port, print a little greeting, and set up our fault

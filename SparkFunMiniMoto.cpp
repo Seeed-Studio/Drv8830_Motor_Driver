@@ -17,7 +17,7 @@
 
 #include <Arduino.h>
 #include "SparkFunMiniMoto.h"
-
+#include "Wire.h"
 // The address of the part is set by a jumper on the board.
 //  See datasheet or schematic for details; default is 0xD0.
 MiniMoto::MiniMoto(byte addr) {
@@ -25,7 +25,9 @@ MiniMoto::MiniMoto(byte addr) {
 
     // This sets the bit rate of the bus; I want 100kHz. See the
     //  datasheet for details on how I came up with this value.
+#if !(defined(__SAMD21__) || defined(__SAMD51__))
     TWBR = 72;
+#endif
 }
 
 // Return the fault status of the DRV8830 chip. Also clears any existing faults.
@@ -79,6 +81,17 @@ void MiniMoto::brake() {
 
 // Private function that reads some number of bytes from the accelerometer.
 void MiniMoto::I2CReadBytes(byte addr, byte* buffer, byte len) {
+#if defined(__SAMD21__) || defined(__SAMD51__)
+	Wire.begin();
+	Wire.beginTransmission((uint16_t)_addr >> 1 & 0x7f);
+	Wire.write(addr);
+	Wire.endTransmission();
+	Wire.requestFrom((uint16_t)_addr >> 1 & 0x7f, len);
+	while(! Wire.available());
+	for (byte i = 0; i < len ; i++){
+		buffer[i] = Wire.read();
+	}
+#else
     byte temp = 0;
     // First, we need to write the address we want to read from, so issue a write
     //  with that address. That's two steps: first, the slave address:
@@ -125,9 +138,19 @@ void MiniMoto::I2CReadBytes(byte addr, byte* buffer, byte len) {
     }
     // Now that we're done reading our data, we can transmit a stop condition.
     TWCR = STOP_COND;
+#endif
 }
 
 void MiniMoto::I2CWriteBytes(byte addr, byte* buffer, byte len) {
+#if defined(__SAMD21__) || defined(__SAMD51__)
+	Wire.begin();
+	Wire.beginTransmission((uint16_t)_addr >> 1 & 0x7f);
+	Wire.write(addr);
+	for (byte i = 0; i < len ; i++){
+	Wire.write(buffer[i]);
+	}
+	Wire.endTransmission();
+#else
     // First, we need to write the address we want to read from, so issue a write
     //  with that address. That's two steps: first, the slave address:
     TWCR = START_COND;          // Send a start condition
@@ -156,4 +179,5 @@ void MiniMoto::I2CWriteBytes(byte addr, byte* buffer, byte len) {
     }
     // Now that we're done writing our data, we can transmit a stop condition.
     TWCR = STOP_COND;
+#endif
 }
